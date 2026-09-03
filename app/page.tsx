@@ -1,7 +1,27 @@
 import Link from 'next/link';
 import { Header } from '@/components/Header';
+import { getSupabaseAdmin } from '@/lib/db/supabase-admin';
 
-export default function HomePage() {
+// Force dynamic rendering so the counter reflects real-time database updates
+export const revalidate = 0;
+
+export default async function HomePage() {
+  let resolvedCount = 0;
+
+  try {
+    const supabaseAdmin = getSupabaseAdmin();
+    const { count, error } = await supabaseAdmin
+      .from('cases')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'resolved');
+
+    if (!error && count !== null) {
+      resolvedCount = count;
+    }
+  } catch (err) {
+    console.error('Failed to fetch resolved cases count:', err);
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 flex flex-col selection:bg-indigo-500 selection:text-white">
       <Header />
@@ -9,7 +29,7 @@ export default function HomePage() {
       {/* Main Hero Section */}
       <main className="flex-1 flex flex-col items-center justify-center px-6 py-20 max-w-4xl mx-auto text-center">
         {/* Status Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400 mb-8">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-xs text-slate-400 mb-8 shadow-sm">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           <span>Private AI-Assisted Reunification</span>
         </div>
@@ -40,16 +60,39 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* Anonymized Aggregate Counter */}
-        <div className="mt-16 pt-8 border-t border-slate-800/60 flex items-center justify-center gap-8 text-center">
-          <div>
-            <div className="text-3xl font-extrabold text-white">0</div>
-            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-medium">Reunited Persons</div>
+        {/* PROMINENT REUNIFICATION COUNTER BANNER */}
+        <div className="mt-14 w-full max-w-xl p-6 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-900/90 to-indigo-950/40 border border-emerald-500/30 shadow-2xl backdrop-blur-xl">
+          <div className="flex items-center justify-center gap-5 text-left">
+            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-3xl shadow-inner shrink-0">
+              💚
+            </div>
+            <div>
+              <div className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-baseline gap-2">
+                <span className="text-emerald-400 font-mono text-3xl sm:text-4xl">{resolvedCount}</span>
+                <span>{resolvedCount === 1 ? 'person reunited with their family' : 'people reunited with their families'}</span>
+              </div>
+              <p className="text-xs text-slate-400 mt-1 font-medium leading-relaxed">
+                Cases safely resolved using Findora&apos;s privacy-first AI face matching.
+              </p>
+            </div>
           </div>
-          <div className="w-px h-8 bg-slate-800" />
+        </div>
+
+        {/* Feature Badges */}
+        <div className="mt-12 pt-8 border-t border-slate-800/60 flex flex-wrap items-center justify-center gap-8 text-center">
           <div>
-            <div className="text-3xl font-extrabold text-emerald-400">100%</div>
-            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-medium">Private & Encrypted</div>
+            <div className="text-2xl font-extrabold text-white">100%</div>
+            <div className="text-[11px] text-slate-500 mt-1 uppercase tracking-wider font-semibold">Private & Encrypted</div>
+          </div>
+          <div className="w-px h-8 bg-slate-800 hidden sm:block" />
+          <div>
+            <div className="text-2xl font-extrabold text-indigo-400">Zero</div>
+            <div className="text-[11px] text-slate-500 mt-1 uppercase tracking-wider font-semibold">Public Search / Feeds</div>
+          </div>
+          <div className="w-px h-8 bg-slate-800 hidden sm:block" />
+          <div>
+            <div className="text-2xl font-extrabold text-emerald-400">Instant</div>
+            <div className="text-[11px] text-slate-500 mt-1 uppercase tracking-wider font-semibold">Strong Match Alerts</div>
           </div>
         </div>
       </main>
