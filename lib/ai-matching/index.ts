@@ -1,9 +1,5 @@
-/**
- * AI Matching Engine Module (face-api.js & vector similarity)
- * 
- * Face detection, embedding generation, and cosine similarity matching
- * logic will be implemented here per PRD Section 3.3 and 4.
- */
+export * from './embeddings';
+export * from './compare';
 
 export type MatchTier = 'strong' | 'notify' | 'possible' | 'discarded';
 
@@ -58,3 +54,4 @@ export function classifyMatchScore(confidenceScore: number): MatchResult {
     shouldAutoShareContact: false,
   };
 }
+
