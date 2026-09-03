@@ -3,40 +3,29 @@
  * ===================
  * Configurable thresholds for face matching confidence scores (0-100).
  */
-export const STRONG_THRESHOLD = 85;
-export const NOTIFY_THRESHOLD = 70;
+export const STRONG_THRESHOLD = 80;
+export const NOTIFY_THRESHOLD = 60;
 export const POSSIBLE_THRESHOLD = 40;
 
-/**
- * Computes cosine similarity between two face embedding vectors (float arrays)
- * and returns a confidence score between 0 and 100.
- *
- * @param a First embedding array (e.g., 128-d vector)
- * @param b Second embedding array (e.g., 128-d vector)
- * @returns Score from 0 to 100
- */
+function euclideanDistance(a: number[], b: number[]): number {
+  let sum = 0;
+  for (let i = 0; i < a.length; i++) {
+    const diff = a[i] - b[i];
+    sum += diff * diff;
+  }
+  return Math.sqrt(sum);
+}
+
 export function compareEmbeddings(a: number[], b: number[]): number {
   if (!a || !b || a.length === 0 || b.length === 0 || a.length !== b.length) {
     return 0;
   }
-
-  let dotProduct = 0;
-  let normA = 0;
-  let normB = 0;
-
-  for (let i = 0; i < a.length; i++) {
-    dotProduct += a[i] * b[i];
-    normA += a[i] * a[i];
-    normB += b[i] * b[i];
-  }
-
-  if (normA === 0 || normB === 0) {
-    return 0;
-  }
-
-  const similarity = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-  const score = Math.max(0, Math.min(100, similarity * 100));
-  return Math.round(score);
+  const distance = euclideanDistance(a, b);
+  const midpoint = 0.55;
+  const steepness = 15;
+  const score = 100 / (1 + Math.exp((distance - midpoint) * steepness));
+  console.log('[Matching Engine] Raw Euclidean distance:', distance, '-> Score:', Math.round(score));
+  return Math.round(Math.max(0, Math.min(100, score)));
 }
 
 export interface MatchResultRecord {
