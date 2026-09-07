@@ -546,6 +546,14 @@ export default function DashboardPage() {
               {mySightings.map((sighting) => {
                 const sharedMatch = sighting.matches.find((m) => m.contact_shared);
 
+                // Determine the highest-tier match for status display
+                const prominentMatch = sighting.matches.find(
+                  (m) => m.tier === 'strong' || m.tier === 'notify'
+                );
+                const possibleOnlyMatch = !prominentMatch
+                  ? sighting.matches.find((m) => m.tier === 'possible')
+                  : null;
+
                 return (
                   <div
                     key={sighting.id}
@@ -559,18 +567,34 @@ export default function DashboardPage() {
                         className="w-20 h-20 rounded-xl object-cover border border-slate-800 shrink-0"
                       />
 
-                      <div className="space-y-1 text-xs">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
-                              sighting.status === 'matched'
-                                ? 'bg-emerald-950/80 text-emerald-400 border-emerald-800'
-                                : 'bg-slate-800 text-slate-400 border-slate-700'
+                      <div className="space-y-1.5 text-xs flex-1">
+                        {/* Match-aware status badge */}
+                        {prominentMatch ? (
+                          <div
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold border ${
+                              prominentMatch.tier === 'strong'
+                                ? 'bg-emerald-950/80 text-emerald-300 border-emerald-700/60'
+                                : 'bg-indigo-950/80 text-indigo-300 border-indigo-700/60'
                             }`}
                           >
-                            STATUS: {sighting.status}
-                          </span>
-                        </div>
+                            <span>{prominentMatch.tier === 'strong' ? '🟢' : '🔵'}</span>
+                            <span>
+                              {prominentMatch.tier === 'strong' ? 'Strong Match' : 'Likely Match'}
+                              {' — '}
+                              {prominentMatch.confidence_score}% confidence
+                            </span>
+                          </div>
+                        ) : possibleOnlyMatch ? (
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-950/60 text-amber-300 border border-amber-700/50">
+                            <span>🟡</span>
+                            <span>Possible match found (under review)</span>
+                          </div>
+                        ) : (
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium bg-slate-800/80 text-slate-400 border border-slate-700/60">
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-pulse" />
+                            <span>No match found yet — we&apos;ll keep checking as new cases are added</span>
+                          </div>
+                        )}
 
                         <p className="text-slate-300">
                           Location: <span className="font-mono text-[11px] text-slate-400">{sighting.location_lat.toFixed(4)}, {sighting.location_lng.toFixed(4)}</span>

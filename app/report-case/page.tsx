@@ -116,21 +116,36 @@ export default function ReportCasePage() {
       const photoUrl = publicUrlData.publicUrl;
 
       // 3. Insert row into cases table including the browser-computed embedding
-      const { error: insertError } = await supabase.from('cases').insert({
-        reporter_id: userId,
-        name,
-        age: parseInt(age, 10),
-        description,
-        last_seen_location: lastSeenLocation,
-        last_seen_date: lastSeenDate,
-        photo_url: photoUrl,
-        embedding: embedding, // Included directly in insert (null if no face detected)
-        contact_share_enabled: contactShareEnabled,
-        status: 'active',
-      });
+      const { data: caseData, error: insertError } = await supabase
+        .from('cases')
+        .insert({
+          reporter_id: userId,
+          name,
+          age: parseInt(age, 10),
+          description,
+          last_seen_location: lastSeenLocation,
+          last_seen_date: lastSeenDate,
+          photo_url: photoUrl,
+          embedding: embedding, // Included directly in insert (null if no face detected)
+          contact_share_enabled: contactShareEnabled,
+          status: 'active',
+        })
+        .select('id')
+        .single();
 
       if (insertError) {
         throw new Error(`Failed to save report: ${insertError.message}`);
+      }
+
+      // 4. Trigger reverse face matching against all existing sightings
+      if (caseData?.id) {
+        await fetch('/api/run-matching-for-case', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ caseId: caseData.id }),
+        });
       }
 
       setSubmittedSuccess(true);
