@@ -1,0 +1,1 @@
+Next.js 16 application that wires shared domain types and Supabase-backed RLS policies to React pages for reporting missing persons, submitting sightings, and matching faces via face-api.

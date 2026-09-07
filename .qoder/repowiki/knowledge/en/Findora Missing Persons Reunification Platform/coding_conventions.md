@@ -1,0 +1,3 @@
+- Shared domain entities are defined once in `types_and_public` and imported via the `@/*` path alias from both page components and server-side logic.
+- Database access goes through the Supabase client with Row Level Security policies enforcing per-user scoping instead of ad-hoc WHERE clauses.
+- Face embeddings are extracted client-side with `@vladmandic/face-api` and stored as JSONB arrays in both `cases` and `sightings` tables for later matching.

@@ -1,0 +1,16 @@
+schema_version: 1
+module_path: ""
+title: Findora Missing Persons Reunification Platform
+scope:
+    - README.md
+    - .gitignore
+    - package.json
+    - package-lock.json
+    - next.config.ts
+    - tsconfig.json
+    - eslint.config.mjs
+    - postcss.config.mjs
+    - supabase/
+source_files: []
+depends_on: []
+related_to: []

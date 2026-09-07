@@ -1,0 +1,3 @@
+- Domain enums are modeled as string literal union types (e.g. `UserRole`, `CaseStatus`) rather than TS `enum`s, keeping them serializable and JSON-safe.
+- All entities expose an `id: string` primary key alongside a `createdAt: string` timestamp, providing a uniform identity and audit shape across `User`, `MissingCase`, `Sighting`, and `Match`.
+- Optional fields on entities use the `?` modifier (e.g. `notes?`, `address?`, `reviewedAt?`) instead of nullable unions, keeping the base shape required.

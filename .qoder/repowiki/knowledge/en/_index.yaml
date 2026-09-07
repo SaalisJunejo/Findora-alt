@@ -1,0 +1,48 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: en-US
+branch: main
+nodes_managed: true
+exported_at: "2026-09-07T17:34:31Z"
+modules:
+    "":
+        dir_name: Findora Missing Persons Reunification Platform
+        title: Findora Missing Persons Reunification Platform
+        scope:
+            - README.md
+            - .gitignore
+            - package.json
+            - package-lock.json
+            - next.config.ts
+            - tsconfig.json
+            - eslint.config.mjs
+            - postcss.config.mjs
+            - supabase/
+        source_files: []
+        children:
+            - app_pages
+            - types_and_public
+        depends_on: []
+        related_to: []
+    app_pages:
+        dir_name: Findora Next.js App Pages & Shared UI Components
+        title: Findora Next.js App Pages & Shared UI Components
+        scope:
+            - app/
+            - components/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: types_and_public
+    types_and_public:
+        dir_name: Shared Domain Types & Static Assets
+        title: Shared Domain Types & Static Assets
+        scope:
+            - types/
+            - public/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: app_pages

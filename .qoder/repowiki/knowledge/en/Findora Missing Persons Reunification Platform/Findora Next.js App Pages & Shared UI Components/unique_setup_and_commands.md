@@ -1,0 +1,1 @@
+The signup flow uses a demo-mode mock OTP generated locally instead of sending real emails; account creation goes through the server-only `/api/create-demo-account` route which calls Supabase Admin API with `email_confirm: true` to bypass email verification and rate limits during hackathon demos.

@@ -1,0 +1,1 @@
+`npm run dev` starts the Next.js development server, `npm run build` produces the production bundle, and `npm run lint` runs ESLint; database schema changes are applied by running the migration file under `supabase/migrations/` against the Supabase PostgreSQL instance.

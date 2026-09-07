@@ -1,0 +1,1 @@
+Next.js App Router with React Server/Client Components, Tailwind CSS for styling, Supabase (Auth + Storage + RLS) for identity and persistence, Leaflet + react-leaflet for interactive maps, OpenStreetMap Nominatim for geocoding, @vercel/analytics for telemetry, and client-side face embedding via `@vladmandic/face-api` loaded in-browser for 128-d face vectors.

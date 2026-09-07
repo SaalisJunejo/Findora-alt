@@ -1,0 +1,1 @@
+Next.js 16 + React 19 with TypeScript (strict mode), Tailwind CSS 4 via PostCSS, Supabase client (`@supabase/supabase-js`) for auth and database access, `@vladmandic/face-api` for client-side face embedding extraction, Leaflet/react-leaflet for location pickers, and ESLint 9 configured via `eslint.config.mjs`.

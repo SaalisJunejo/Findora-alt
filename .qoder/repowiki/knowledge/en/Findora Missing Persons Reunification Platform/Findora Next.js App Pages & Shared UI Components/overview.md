@@ -1,0 +1,1 @@
+Next.js App Router pages and shared React components that implement Findora's public landing, authentication, case/sighting reporting, dashboard, and location picker for the missing-persons reunification platform.

@@ -1,0 +1,1 @@
+Defines the application's core TypeScript domain types (users, missing cases, sightings, matches) and ships pre-trained face recognition model weights used by the app.

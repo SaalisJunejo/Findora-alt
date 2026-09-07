@@ -1,0 +1,7 @@
+- Each route is implemented as a Next.js App Router folder with a `page.tsx` file, keeping URL-to-file mapping explicit and colocated.
+- Authenticated pages guard access by calling `supabase.auth.getUser()` / `getSession()` on mount and redirecting to `/login` when no session exists.
+- Server-rendered pages opt out of caching with `export const revalidate = 0` so counters reflect live database state.
+- Heavy browser-only dependencies (Leaflet map) are loaded via `next/dynamic` with `ssr: false` to avoid SSR failures.
+- Form submissions follow a uniform pattern: local validation → upload to Supabase Storage bucket → insert row into the corresponding table → trigger matching via a `/api/run-matching*` endpoint.
+- UI state for loading, errors, and success feedback is managed with `useState` hooks and displayed in consistent styled alert boxes (red for errors, green for success).
+- Shared visual style is enforced through a consistent dark theme palette (`bg-slate-950`, `text-slate-50`, indigo accents) applied across all pages.

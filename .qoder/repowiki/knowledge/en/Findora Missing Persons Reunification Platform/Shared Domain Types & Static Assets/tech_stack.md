@@ -1,0 +1,1 @@
+TypeScript type definitions; ONNX face-recognition models (ssd_mobilenetv1, face_landmark_68, face_recognition) with binary weights and manifests served via Next.js `public/`.
